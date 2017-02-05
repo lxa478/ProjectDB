@@ -27,9 +27,25 @@ class TestInternalNode(unittest.TestCase):
         size = 10
         node = InternalNode(size)
 
-        node.record_index = 10
-        node.keys = ['c', 'd', 'e', 'f', 'h', 'i', 'j', 'k', 'l', 'm']
-        node.children = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        node.insert(0, 'c', 1)
+        node.insert(1, 'd', 2)
+        node.insert(2, 'e', 3)
+        node.insert(3, 'f', 4)
+        node.insert(4, 'h', 5)
+        node.insert(5, 'i', 6)
+        node.insert(6, 'j', 7)
+        node.insert(7, 'k', 8)
+        node.insert(8, 'l', 9)
+        node.insert(9, 'm', 10)
+
+        self.assertEqual(node.record_index, 9)
+        self.assertEqual(node.keys, ['c', 'd', 'e', 'f', 'h', 'i', 'j', 'k', 'l', 'm'])
+        self.assertEqual(node.children, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+
+        """
+         c d e f h i j k l m
+        0 1 2 3 4 5 6 7 8 9 10
+        """
 
         # Low Key Out-of-Range
         self.assertEqual(0, node.next_child("a"))

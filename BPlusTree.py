@@ -28,6 +28,9 @@ class InternalNode(object):
             else:
                 lo = mid + 1
 
+        if key >= self.keys[lo]:
+            return self.children[lo + 1]
+
         return self.children[lo]
 
     def insert(self, node, split_key, split_node):
@@ -122,6 +125,7 @@ class BPlusTree(object):
         node = root
         while type(node) is not LeafNode:
             node = node.next_child(key)
+
         return node
 
     def insert_in_parent(self, node, split_key, split_node):
@@ -135,9 +139,9 @@ class BPlusTree(object):
             parent = node.parent
 
             if not parent.full():
-                parent.insert(split_key, node, split_node)
+                parent.insert(node, split_key, split_node)
             else:
-                parent.insert(split_key, node, split_node)
+                parent.insert(node, split_key, split_node)
                 split_key, split_parent = parent.split()
                 self.insert_in_parent(parent, split_key, split_parent)
 
@@ -161,7 +165,7 @@ class BPlusTree(object):
             node.insert(key, value)
             split_key, split_node = node.split()
 
-            # Insert the 2 nodes into parent internal nodes
+            # Insert the nodes into parent internal nodes
             self.insert_in_parent(node, split_key, split_node)
 
     def get(self, key):
