@@ -2,12 +2,11 @@ from BPlusTree import BPlusTree
 
 
 class ProjectDB(object):
-    def __init__(self, file):
-        self.file = file
-        self.bptree = BPlusTree(10)
+    def __init__(self):
+        self.file = None
 
-    def start(self):
-        pass
+    def open(self, file_name, mode):
+        self.file = open(file_name, mode)
 
     def close(self):
-        pass
+        self.file.close()

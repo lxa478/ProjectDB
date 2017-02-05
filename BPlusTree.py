@@ -1,3 +1,5 @@
+import mmap
+
 class Record(object):
     def __init__(self, key, value):
         self.key = key
@@ -135,8 +137,9 @@ class LeafNode(object):
 
 
 class BPlusTree(object):
-    def __init__(self, size):
+    def __init__(self, size, file_name):
         self.size = size
+        self.file_name = file_name
         self.root = None
 
     def _find_leaf(self, key, root):
