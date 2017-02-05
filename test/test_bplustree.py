@@ -62,3 +62,101 @@ class TestBPlusTree(unittest.TestCase):
 
         self.assertEqual(bptree.root.children[1].children[0].keys, ['g', 'h', None, None])
         self.assertEqual(bptree.root.children[1].children[1].keys, ['i', 'j', None, None])
+
+    def test_get_item(self):
+        size = 4
+        bptree = BPlusTree(size)
+
+        cases1 = [
+            ('a', 'Value A'),
+            ('b', 'Value B'),
+            ('c', 'Value C'),
+            ('d', 'Value D')
+        ]
+
+        for case in cases1:
+            bptree[case[0]] = case[1]
+
+        self.assertEqual(bptree['a'], 'Value A')
+        self.assertEqual(bptree['b'], 'Value B')
+        self.assertEqual(bptree['c'], 'Value C')
+        self.assertEqual(bptree['d'], 'Value D')
+
+        with self.assertRaises(KeyError) as context:
+            x = bptree['e']
+
+    def test_get_item_with_default(self):
+        size = 4
+        bptree = BPlusTree(size)
+
+        cases1 = [
+            ('a', 'Value A'),
+            ('b', 'Value B'),
+            ('c', 'Value C'),
+            ('d', 'Value D')
+        ]
+
+        for case in cases1:
+            bptree[case[0]] = case[1]
+
+        self.assertEqual(bptree.get('a'), 'Value A')
+        self.assertEqual(bptree.get('b'), 'Value B')
+        self.assertEqual(bptree.get('c'), 'Value C')
+        self.assertEqual(bptree.get('d'), 'Value D')
+
+        self.assertEqual(bptree.get('e'), None)
+        self.assertEqual(bptree.get('f', 'DEFAULT VALUE'), 'DEFAULT VALUE')
+
+    def test_contains(self):
+        size = 4
+        bptree = BPlusTree(size)
+
+        cases1 = [
+            ('a', 'Value A'),
+            ('b', 'Value B'),
+            ('c', 'Value C'),
+            ('d', 'Value D')
+        ]
+
+        for case in cases1:
+            bptree[case[0]] = case[1]
+
+        self.assertTrue('a' in bptree)
+        self.assertTrue('b' in bptree)
+        self.assertTrue('c' in bptree)
+        self.assertTrue('d' in bptree)
+        self.assertFalse('e' in bptree)
+
+    def test_keys(self):
+        size = 4
+        bptree = BPlusTree(size)
+
+        cases1 = [
+            ('a', 'Value A'),
+            ('b', 'Value B'),
+            ('c', 'Value C'),
+            ('d', 'Value D')
+        ]
+
+        for case in cases1:
+            bptree[case[0]] = case[1]
+
+        keys = list(bptree.keys())
+        self.assertEqual(keys, ['a', 'b', 'c', 'd'])
+
+    def test_items(self):
+        size = 4
+        bptree = BPlusTree(size)
+
+        cases1 = [
+            ('a', 'Value A'),
+            ('b', 'Value B'),
+            ('c', 'Value C'),
+            ('d', 'Value D')
+        ]
+
+        for case in cases1:
+            bptree[case[0]] = case[1]
+
+        keys = list(bptree.items())
+        self.assertEqual(keys, ['Value A', 'Value B', 'Value C', 'Value D'])

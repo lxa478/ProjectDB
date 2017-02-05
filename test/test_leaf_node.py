@@ -79,3 +79,16 @@ class TestLeafNode(unittest.TestCase):
         self.assertEqual(split_node.keys, ['c', 'd', None, None])
         self.assertEqual(len(split_node.records), 4)
         self.assertEqual(split_node.record_index, 1)
+
+    def test_find(self):
+        size = 4
+        node = LeafNode(size)
+
+        node.insert('a', 1)
+        node.insert('b', 2)
+        node.insert('c', 3)
+
+        self.assertIsNotNone(node.find('a'))
+        self.assertIsNotNone(node.find('b'))
+        self.assertIsNotNone(node.find('c'))
+        self.assertIsNone(node.find('d'))
