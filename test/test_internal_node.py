@@ -23,7 +23,6 @@ class TestInternalNode(unittest.TestCase):
         node.insert(None, 'c', None)
         self.assertTrue(node.full())
 
-
     def test_next_child(self):
         size = 10
         node = InternalNode(size)
@@ -54,17 +53,16 @@ class TestInternalNode(unittest.TestCase):
         size = 3
         node = InternalNode(size)
 
-        node.insert(3, 'c', 4)
-        self.assertEqual(node.keys, ['c', None, None])
-        self.assertEqual(node.children, [3, 4, None, None])
+        cases = [
+            (3, 'c', 4, ['c', None, None], [3, 4, None, None]),
+            (5, 'e', 6, ['c', 'e', None], [3, 5, 6, None]),
+            (1, 'a', 2, ['a', 'c', 'e'], [1, 2, 5, 6])
+        ]
 
-        node.insert(5, 'e', 6)
-        self.assertEqual(node.keys, ['c', 'e', None])
-        self.assertEqual(node.children, [3, 5, 6, None])
-
-        node.insert(1, 'a', 2)
-        self.assertEqual(node.keys, ['a', 'c', 'e'])
-        self.assertEqual(node.children, [1, 2, 5, 6])
+        for case in cases:
+            node.insert(case[0], case[1], case[2])
+            self.assertEqual(node.keys, case[3])
+            self.assertEqual(node.children, case[4])
 
     def test_split_odd(self):
         size = 5
@@ -85,6 +83,7 @@ class TestInternalNode(unittest.TestCase):
 
         self.assertEqual(split_node.keys, ['d', 'e', None, None, None])
         self.assertEqual(split_node.children, [4, 5, 6, None, None, None])
+        self.assertEqual(split_node.record_index, 1)
 
     def test_split_even(self):
         size = 4
@@ -104,3 +103,4 @@ class TestInternalNode(unittest.TestCase):
 
         self.assertEqual(split_node.keys, ['d', None, None, None])
         self.assertEqual(split_node.children, [4, 5, None, None, None])
+        self.assertEqual(split_node.record_index, 0)
